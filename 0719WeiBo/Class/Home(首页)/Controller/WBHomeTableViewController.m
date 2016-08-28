@@ -27,7 +27,7 @@
 #import "WBHttpTool.h"
 #import "WBStatusCacheTool.h"
 #import "WMPlayer.h"
-
+#import "WBVideoUrlAnalysisTool.h"
 
 #import "WBStatusTopView.h"
 #import "WBVideoView.h"
@@ -194,22 +194,26 @@
 {
     // 封装请求参数
     WBStatusParameter *params = [WBStatusParameter parameter];
-    //    WBStatusFrame *statusFrame = [self.statusFramesArray firstObject];
     
     NSArray *cache = [WBStatusCacheTool loadLocalStatusCacheWithParams:params];
     
-    if (!cache.count) {
+    if (cache.count) {
         NSMutableArray *statusArray = [NSMutableArray array];
         for (WBStatus *status in cache) {
             WBStatusFrame *frame = [[WBStatusFrame alloc] init];
-            frame.status         = status;
+            
+            if ([status.videoStr length] > 1) {
+                [WBVideoUrlAnalysisTool getRealVideoUrlFromOriginalUrl:status.videoStr WithBlock:^(NSString *realVideoUrl) {
+                    status.videoStr = realVideoUrl;
+                }];
+            }
+            frame.status = status;
             [statusArray addObject:frame];
         }
         
         self.statusFramesArray = [statusArray copy];
         
         [self.tableView reloadData];
-        [self showCountOfNewStatus:statusArray.count];
         [self scrollViewDidEndDragging:self.tableView willDecelerate:NO];
     }else{
         [self.headerRefresh beginRefreshing];
