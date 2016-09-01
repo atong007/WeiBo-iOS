@@ -77,7 +77,6 @@
         
         topH = CGRectGetMaxY(_pictureViewF);
     }else if ([_status.videoStr length] > 0){
-        WBLog(@"_status.videoStr:%@", _status.videoStr);
         CGFloat videoW = contentMaxW;
         CGFloat videoH = 160;
         CGFloat videoX = WBStatusCellBorder;

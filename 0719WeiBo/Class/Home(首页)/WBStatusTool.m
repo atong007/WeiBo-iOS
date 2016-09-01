@@ -51,9 +51,7 @@
                             if ([newStatus.videoStr length] > 1) {
                                 newStatus.videoStr = array[i++];
                                 if ([newStatus.videoStr length] > 1) {
-                                    [WBVideoUrlAnalysisTool getRealVideoUrlFromOriginalUrl:newStatus.videoStr WithBlock:^(NSString *realVideoUrl) {
-                                        newStatus.videoStr = realVideoUrl;
-                                    }];
+                                    newStatus.videoStr = [WBVideoUrlAnalysisTool getRealVideoUrlFromOriginalUrl:newStatus.videoStr];
                                 }
                                 
                             }

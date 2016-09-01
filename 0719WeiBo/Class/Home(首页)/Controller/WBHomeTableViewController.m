@@ -201,20 +201,13 @@
         NSMutableArray *statusArray = [NSMutableArray array];
         for (WBStatus *status in cache) {
             WBStatusFrame *frame = [[WBStatusFrame alloc] init];
-            
-            if ([status.videoStr length] > 1) {
-                [WBVideoUrlAnalysisTool getRealVideoUrlFromOriginalUrl:status.videoStr WithBlock:^(NSString *realVideoUrl) {
-                    status.videoStr = realVideoUrl;
-                }];
-            }
-            frame.status = status;
+            frame.status         = status;
             [statusArray addObject:frame];
         }
         
         self.statusFramesArray = [statusArray copy];
         
         [self.tableView reloadData];
-//        [self scrollViewDidEndDragging:self.tableView willDecelerate:NO];
     }else{
         [self.headerRefresh beginRefreshing];
     }
@@ -355,19 +348,19 @@
             NSLog(@"第0个旋转方向---电池栏在上");
             [self toFullScreenWithInterfaceOrientation:interfaceOrientation];
         }
-            break;
+        break;
         case UIInterfaceOrientationLandscapeLeft:{
             NSLog(@"第2个旋转方向---电池栏在左");
             [self toFullScreenWithInterfaceOrientation:interfaceOrientation];
         }
-            break;
+        break;
         case UIInterfaceOrientationLandscapeRight:{
             NSLog(@"第1个旋转方向---电池栏在右");
             [self toFullScreenWithInterfaceOrientation:interfaceOrientation];
         }
-            break;
+        break;
         default:
-            break;
+        break;
     }
 }
 
@@ -558,7 +551,6 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    WBLog(@"scrollViewDidScroll");
     if (_currentIndexPath) {
         BOOL isCurrentIndexOutOfScreen = YES;
         for (WBStatusCell *cell in [self.tableView visibleCells])

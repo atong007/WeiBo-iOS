@@ -48,22 +48,22 @@
     }];
 }
 
-+ (void)getRealVideoUrlFromOriginalUrl:(NSString *)originalUrl WithBlock:(void(^)(NSString *))complete
++ (NSString *)getRealVideoUrlFromOriginalUrl:(NSString *)originalUrl
 {
-    NSString *url = [NSString stringWithFormat:@"http://localhost/getVedio.php?url=%@", originalUrl];
-    [WBHttpTool getVideoAddressWithURL:url parameters:nil success:^(id responseObject)
-     {
-         NSString *urlString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-         //        WBLog(@"urlString:%@", urlString);
-         if ([urlString containsString:@"http://"]) {
-             complete(urlString);
-         }else{
-             complete(@"");
-         }
-     } failure:^(NSError * _Nonnull error) {
-         WBLog(@"GETVideoAddressWithURL error:%@", error);
-         complete(@"");
-     }];
+    if ([originalUrl length] <= 1) {
+        return @"";
+    }
+    NSString *string = [NSString stringWithContentsOfURL:[NSURL URLWithString:originalUrl] encoding:NSUTF8StringEncoding error:NULL];
+    
+    NSRange lelfRange  = [string rangeOfString:@"flashvars=\"list="];
+    NSRange rightRange = [string rangeOfString:@"&fid="];
+    if (lelfRange.location != NSNotFound && rightRange.location != NSNotFound) {
+        NSString *videoUrl = [string substringWithRange:NSMakeRange(lelfRange.location + lelfRange.length, rightRange.location - lelfRange.location - lelfRange.length)];
+        return [videoUrl stringByRemovingPercentEncoding];
+    }else{
+        return @"";
+    }
+    
 }
 
 @end
