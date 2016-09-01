@@ -214,7 +214,7 @@
         self.statusFramesArray = [statusArray copy];
         
         [self.tableView reloadData];
-        [self scrollViewDidEndDragging:self.tableView willDecelerate:NO];
+//        [self scrollViewDidEndDragging:self.tableView willDecelerate:NO];
     }else{
         [self.headerRefresh beginRefreshing];
     }
@@ -523,6 +523,7 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if(scrollView == self.tableView){
+        
         for (WBStatusCell *cell in [self.tableView visibleCells])
         {
             if ([cell.statusFrames.status.videoStr length] <= 1) {
@@ -557,6 +558,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    WBLog(@"scrollViewDidScroll");
     if (_currentIndexPath) {
         BOOL isCurrentIndexOutOfScreen = YES;
         for (WBStatusCell *cell in [self.tableView visibleCells])

@@ -50,19 +50,20 @@
 
 + (void)getRealVideoUrlFromOriginalUrl:(NSString *)originalUrl WithBlock:(void(^)(NSString *))complete
 {
-    NSDictionary *dict = @{@"weibourl": originalUrl};
-    [WBHttpTool getVideoAddressWithURL:@"http://www.weibovideo.com/controller.php" parameters:dict success:^(id responseObject) {
-        NSString *urlString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-//        WBLog(@"originalUrl:%@, response:%@",originalUrl, urlString);
-        if ([urlString containsString:@"http://"]) {
-            complete(urlString);
-        }else{
-            complete(@"");
-        }
-    } failure:^(NSError *error) {
-        WBLog(@"GETVideoAddressWithURL error:%@", error);
-        complete(@"");
-    }];
+    NSString *url = [NSString stringWithFormat:@"http://localhost/getVedio.php?url=%@", originalUrl];
+    [WBHttpTool getVideoAddressWithURL:url parameters:nil success:^(id responseObject)
+     {
+         NSString *urlString = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+         //        WBLog(@"urlString:%@", urlString);
+         if ([urlString containsString:@"http://"]) {
+             complete(urlString);
+         }else{
+             complete(@"");
+         }
+     } failure:^(NSError * _Nonnull error) {
+         WBLog(@"GETVideoAddressWithURL error:%@", error);
+         complete(@"");
+     }];
 }
 
 @end
