@@ -196,15 +196,15 @@
     
     NSArray *cache = [WBStatusCacheTool loadLocalStatusCacheWithParams:params];
     
-    if (!cache.count) {
+    if (cache.count) {
         NSMutableArray *statusArray = [NSMutableArray array];
         for (WBStatus *status in cache) {
             WBStatusFrame *frame = [[WBStatusFrame alloc] init];
             [WBVideoUrlAnalysisTool getRealVideoUrlFromOriginalUrl:status.videoStr WithBlock:^(NSString *realVideoUrl, NSString *videoImage) {
-                status.videoStr = realVideoUrl;
+                status.videoStr   = realVideoUrl;
                 status.videoImage = videoImage;
             }];
-            frame.status         = status;
+            frame.status = status;
             [statusArray addObject:frame];
         }
         
@@ -349,19 +349,19 @@
             NSLog(@"旋转方向---电池栏在上");
             [self toFullScreenWithInterfaceOrientation:interfaceOrientation];
         }
-        break;
+            break;
         case UIInterfaceOrientationLandscapeLeft:{
             NSLog(@"旋转方向---电池栏在左");
             [self toFullScreenWithInterfaceOrientation:interfaceOrientation];
         }
-        break;
+            break;
         case UIInterfaceOrientationLandscapeRight:{
             NSLog(@"旋转方向---电池栏在右");
             [self toFullScreenWithInterfaceOrientation:interfaceOrientation];
         }
-        break;
+            break;
         default:
-        break;
+            break;
     }
 }
 
@@ -462,7 +462,7 @@
  */
 -(void)startPlayVideoWithURL:(NSString *)urlString toView:(WBVideoView *)videoView
 {
-//    WBLog(@"urlString:%@", urlString);
+    //    WBLog(@"urlString:%@", urlString);
     _videoPlayer               = [[WMPlayer alloc]initWithFrame:videoView.bounds videoURLStr:urlString];
     _videoPlayer.player.volume = 0.0;
     [_videoPlayer.player play];
