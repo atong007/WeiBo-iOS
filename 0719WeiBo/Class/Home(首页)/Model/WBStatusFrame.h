@@ -15,11 +15,11 @@
 #define WBStatusCellBorder 10
 
 
-#define WBFontOfName [UIFont systemFontOfSize:17.0]
-#define WBFontOfContent [UIFont systemFontOfSize:16.0]
+#define WBFontOfName [UIFont           systemFontOfSize:17.0]
+#define WBFontOfContent [UIFont        systemFontOfSize:16.0]
 #define WBFontOfRetweetContent [UIFont systemFontOfSize:15.0]
-#define WBFontOfRetweetName WBFontOfRetweetContent
-#define WBFontOfTime [UIFont systemFontOfSize:12.0]
+#define WBFontOfRetweetName            WBFontOfRetweetContent
+#define WBFontOfTime [UIFont           systemFontOfSize:12.0]
 
 @interface WBStatusFrame : NSObject
 

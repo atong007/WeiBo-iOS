@@ -25,7 +25,7 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-
+        
         // 1.添加顶部的View的(原创及转发微博的组成部分)
         [self setupTopView];
         
@@ -38,9 +38,9 @@
 + (instancetype)cellWithTableView:(UITableView *)tableView {
     
     static NSString *reuseID = @"Home";
-    WBStatusCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseID];
+    WBStatusCell *cell       = [tableView dequeueReusableCellWithIdentifier:reuseID];
     if (cell == nil) {
-        cell = [[WBStatusCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseID];
+        cell                     = [[WBStatusCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseID];
     }
     return cell;
 }
@@ -51,7 +51,7 @@
 - (void)setupTopView
 {
     self.selectedBackgroundView = [[UIView alloc] init];
-    self.backgroundColor = [UIColor clearColor];
+    self.backgroundColor        = [UIColor clearColor];
     
     // 顶部View父控件
     WBStatusTopView *topView = [[WBStatusTopView alloc] init];
@@ -75,16 +75,16 @@
     
     // 1.设置顶部的View的Frame(原创微博的组成部分)
     [self setupTopViewFrame];
-
+    
     // 2.设置每条微博底部的工具栏的Frame
     [self setupStatusToolBarFram];
 }
 
 - (void)setFrame:(CGRect)frame
 {
-//    frame.origin.x = WBStatusMargin;
-    frame.origin.y += WBStatusMargin;
-//    frame.size.width -= 2 * WBStatusMargin;
+    //    frame.origin.x = WBStatusMargin;
+    frame.origin.y    += WBStatusMargin;
+    //    frame.size.width -= 2 * WBStatusMargin;
     frame.size.height -= WBStatusMargin;
     [super setFrame:frame];
 }
@@ -94,7 +94,7 @@
  */
 - (void)setupTopViewFrame
 {
-    self.topView.frame = self.statusFrames.topViewF;
+    self.topView.frame        = self.statusFrames.topViewF;
     self.topView.statusFrames = self.statusFrames;
 }
 
@@ -103,7 +103,7 @@
  */
 - (void)setupStatusToolBarFram
 {
-    self.statusToolbar.frame = self.statusFrames.statusToolbarF;
+    self.statusToolbar.frame  = self.statusFrames.statusToolbarF;
     self.statusToolbar.status = self.statusFrames.status;
 }
 

@@ -10,8 +10,7 @@
 
 @interface WBVideoUrlAnalysisTool : UIView
 
-//+ (void)getRealVideoUrlFromOriginalUrl:(NSString *)originalUrl WithBlock:(void(^)(NSString *realVideoUrl))complete;
-+ (NSString *)getRealVideoUrlFromOriginalUrl:(NSString *)originalUrl;
++ (void)getRealVideoUrlFromOriginalUrl:(NSString *)originalUrl WithBlock:(void(^)(NSString *realVideoUrl, NSString *videoImage))complete;
 + (void)getLongUrlsFromShortUrls:(NSString *)shortlUrls WithBlock:(void(^)(NSArray *array))complete;
 
 @end

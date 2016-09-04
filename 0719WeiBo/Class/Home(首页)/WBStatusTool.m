@@ -35,36 +35,12 @@
 //            NSLog(@"responseObject:%@", responseObject);
             WBStatusResult *result = [WBStatusResult objectWithKeyValues:responseObject];
             if (result.statuses.count) {
-                NSString *urlString = @"";
-                for (WBStatus *status in result.statuses) {
-                    if (status.videoStr) {
-                        urlString = [urlString stringByAppendingString:[NSString stringWithFormat: @"&url_short=%@",status.videoStr]];
-                    }
-                }
-                if ([urlString length] > 1)
-                {
-                    NSMutableArray *newStatuses = [NSMutableArray array];
-                    [WBVideoUrlAnalysisTool getLongUrlsFromShortUrls:urlString WithBlock:^(NSArray *array)
-                     {
-                        int i = 0;
-                        for (WBStatus *newStatus in result.statuses) {
-                            if ([newStatus.videoStr length] > 1) {
-                                newStatus.videoStr = array[i++];
-                                if ([newStatus.videoStr length] > 1) {
-                                    newStatus.videoStr = [WBVideoUrlAnalysisTool getRealVideoUrlFromOriginalUrl:newStatus.videoStr];
-                                }
-                                
-                            }
-                            [newStatuses addObject:newStatus];
-                        }
-                        result.statuses = newStatuses;
-                        [WBStatusCacheTool storeStatusesToLocalCache:result.statuses];
-                        success(result);
-                    }];
-                }else {
+                [self setupVideoURLWith:result.statuses complete:^(NSArray *newStatuses) {
+                    result.statuses = newStatuses;
+                    
                     [WBStatusCacheTool storeStatusesToLocalCache:result.statuses];
                     success(result);
-                }
+                }];
             }else {
                 success(result);
             }
@@ -76,6 +52,70 @@
     
 }
 
++ (void)setupVideoURLWith:(NSArray *)statuses complete:(void (^)(NSArray *newStatuses))success
+{
+    NSString *urlString = @"";
+    for (WBStatus *status in statuses) {
+        if (status.videoStr) {
+            urlString = [urlString stringByAppendingString:[NSString stringWithFormat: @"&url_short=%@",status.videoStr]];
+        }
+    }
+    if ([urlString length] > 1)
+    {
+        NSMutableArray *newStatuses = [NSMutableArray array];
+        [WBVideoUrlAnalysisTool getLongUrlsFromShortUrls:urlString WithBlock:^(NSArray *array)
+         {
+             int i = 0;
+             for (WBStatus *newStatus in statuses) {
+                 if ([newStatus.videoStr length] > 1) {
+                     newStatus.videoStr = array[i++];
+                     if ([newStatus.videoStr length] > 1) {
+                         [WBVideoUrlAnalysisTool getRealVideoUrlFromOriginalUrl:newStatus.videoStr WithBlock:^(NSString *realVideoUrl, NSString *newVideoImage) {
+                                newStatus.videoStr = realVideoUrl;
+                                newStatus.videoImage = newVideoImage;
+                         }];
+                     }
+                 }
+                 
+                 [newStatuses addObject:newStatus];
+             }
+             success(newStatuses);
+         }];
+    }else {
+        success(statuses);
+    }
+}
+    
+//    {
+//        NSString *urlString = @"";
+//        for (WBStatus *status in result.statuses) {
+//            if (status.videoStr) {
+//                urlString = [urlString stringByAppendingString:[NSString stringWithFormat: @"&url_short=%@",status.videoStr]];
+//            }
+//        }
+//        if ([urlString length] > 1)
+//        {
+//            NSMutableArray *newStatuses = [NSMutableArray array];
+//            [WBVideoUrlAnalysisTool getLongUrlsFromShortUrls:urlString WithBlock:^(NSArray *array)
+//             {
+//                 int i = 0;
+//                 for (WBStatus *newStatus in result.statuses) {
+//                     if ([newStatus.videoStr length] > 1) {
+//                         newStatus.videoStr = array[i++];
+//                         if ([newStatus.videoStr length] > 1) {
+//                             [WBVideoUrlAnalysisTool getRealVideoUrlFromOriginalUrl:newStatus.videoStr WithBlock:^(NSString *realVideoUrl, NSString *videoImage) {
+//                                 newStatus.videoStr = realVideoUrl;
+//                                 newStatus.videoImage = videoImage;
+//                             }];
+//                         }
+//                     }
+//                     [newStatuses addObject:newStatus];
+//                 }
+//                 result.statuses = newStatuses;
+//                 [WBStatusCacheTool storeStatusesToLocalCache:result.statuses];
+//                 success(result);
+//             }];
+//        }
 + (void)postStatusWithoutPicture:(WBTweetStatusParameter *)parameters success:(void (^)(WBTweetStatusResult *))success failure:(void (^)(NSError *))failure
 {
     [WBHttpTool POSTHttpWithURL:@"https://api.weibo.com/2/statuses/update.json" parameters:parameters.keyValues success:^(id responseObject) {

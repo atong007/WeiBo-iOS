@@ -33,7 +33,10 @@
  *  微博的视频地址
  */
 @property (nonatomic, copy) NSString *videoStr;
-
+/**
+ *  微博的视频缩略图地址
+ */
+@property (nonatomic, copy) NSString *videoImage;
 /**
  *  微博配图的缩略图地址(没有不返回此字段)
  */

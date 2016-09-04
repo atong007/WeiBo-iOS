@@ -66,7 +66,6 @@
                                              selector:@selector(deviceOrientationChange)
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -197,10 +196,14 @@
     
     NSArray *cache = [WBStatusCacheTool loadLocalStatusCacheWithParams:params];
     
-    if (cache.count) {
+    if (!cache.count) {
         NSMutableArray *statusArray = [NSMutableArray array];
         for (WBStatus *status in cache) {
             WBStatusFrame *frame = [[WBStatusFrame alloc] init];
+            [WBVideoUrlAnalysisTool getRealVideoUrlFromOriginalUrl:status.videoStr WithBlock:^(NSString *realVideoUrl, NSString *videoImage) {
+                status.videoStr = realVideoUrl;
+                status.videoImage = videoImage;
+            }];
             frame.status         = status;
             [statusArray addObject:frame];
         }
@@ -250,7 +253,7 @@
         [self.headerRefresh endRefreshing];
     } failure:^(NSError *error) {
         [self.headerRefresh endRefreshing];
-        WBLog(@"error:%@", error);
+        WBLog(@"Load New Status Error:%@", error);
     }];
 }
 
@@ -287,7 +290,7 @@
         [self.footerRefresh endRefreshing];
     } failure:^(NSError *error) {
         [self.footerRefresh endRefreshing];
-        WBLog(@"error:%@", error);
+        WBLog(@"Load More Staus Error:%@", error);
     }];
     
 }
@@ -330,13 +333,11 @@
     
 }
 
-
 /**
  *  旋转屏幕通知
  */
 - (void)deviceOrientationChange
 {
-    WBLog(@"deviceOrientationChange");
     if (!_videoPlayer || _videoPlayer.bottomView.alpha == 0.0){
         return;
     }
@@ -345,17 +346,17 @@
     UIInterfaceOrientation interfaceOrientation = (UIInterfaceOrientation)orientation;
     switch (interfaceOrientation) {
         case UIInterfaceOrientationPortrait:{
-            NSLog(@"第0个旋转方向---电池栏在上");
+            NSLog(@"旋转方向---电池栏在上");
             [self toFullScreenWithInterfaceOrientation:interfaceOrientation];
         }
         break;
         case UIInterfaceOrientationLandscapeLeft:{
-            NSLog(@"第2个旋转方向---电池栏在左");
+            NSLog(@"旋转方向---电池栏在左");
             [self toFullScreenWithInterfaceOrientation:interfaceOrientation];
         }
         break;
         case UIInterfaceOrientationLandscapeRight:{
-            NSLog(@"第1个旋转方向---电池栏在右");
+            NSLog(@"旋转方向---电池栏在右");
             [self toFullScreenWithInterfaceOrientation:interfaceOrientation];
         }
         break;
@@ -364,6 +365,9 @@
     }
 }
 
+/**
+ *  屏幕缩放处理（屏幕旋转或者点击放大全屏）
+ */
 -(void)toFullScreenWithInterfaceOrientation:(UIInterfaceOrientation )interfaceOrientation{
     
     [_videoPlayer removeFromSuperview];
@@ -411,6 +415,9 @@
     NSLog(@"popMenu");
 }
 
+/**
+ *  用户标题被点击
+ */
 - (void)titleClicked:(WBTitleView *)titleButton
 {
     titleButton.selected = !titleButton.selected;
@@ -455,7 +462,7 @@
  */
 -(void)startPlayVideoWithURL:(NSString *)urlString toView:(WBVideoView *)videoView
 {
-    WBLog(@"urlString:%@", urlString);
+//    WBLog(@"urlString:%@", urlString);
     _videoPlayer               = [[WMPlayer alloc]initWithFrame:videoView.bounds videoURLStr:urlString];
     _videoPlayer.player.volume = 0.0;
     [_videoPlayer.player play];
@@ -484,7 +491,9 @@
     _currentIndexPath = nil;
 }
 
-#pragma mark - 单击手势方法
+/**
+ *  单击手势方法
+ */
 - (void)handleSingleTap{
     [UIView animateWithDuration:0.5 animations:^{
         if (_videoPlayer.bottomView.alpha == 0.0) {
@@ -549,6 +558,9 @@
     }
 }
 
+/**
+ *  当有播放视频被滚动出屏幕范围时需要清除video
+ */
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (_currentIndexPath) {
@@ -567,6 +579,9 @@
     }
 }
 
+/**
+ *  惯性滚动结束时
+ */
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     WBLog(@"scrollViewDidEndDecelerating");

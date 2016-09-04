@@ -11,6 +11,6 @@
 @interface WBVideoView : UIView
 
 @property (weak, nonatomic) IBOutlet UIButton *playOrPauseBtn;
-@property (nonatomic, strong) NSString *videoUrl;
+@property (nonatomic, copy) NSString *videoImage;
 + (instancetype)videoView;
 @end

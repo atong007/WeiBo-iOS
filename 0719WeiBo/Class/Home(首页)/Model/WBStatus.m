@@ -96,7 +96,7 @@
 - (void)setText:(NSString *)text
 {
     _text              = text;
-    NSInteger location = [text rangeOfString:@"http://t.cn/"].location;
+    NSUInteger location = [text rangeOfString:@"http://t.cn/" options:NSBackwardsSearch].location;
     if (location != NSNotFound) {
         NSString *videoUrl = [text substringWithRange:NSMakeRange(location, 19)];
         _videoStr = videoUrl;

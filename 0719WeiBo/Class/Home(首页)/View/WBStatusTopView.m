@@ -55,7 +55,7 @@
         
         self.userInteractionEnabled = YES;
         // 设置背景图片
-        self.image = [UIImage resizeImageWithName:@"timeline_card_top_background_os7"];
+        self.image            = [UIImage resizeImageWithName:@"timeline_card_top_background_os7"];
         self.highlightedImage = [UIImage resizeImageWithName:@"timeline_card_top_background_highlighted_os7"];
         
         // 设置原创微博的子控件
@@ -89,33 +89,33 @@
     self.pictureView = pictureView;
     
     /** 昵称 */
-    UILabel *nameLabel = [[UILabel alloc] init];
-    nameLabel.font = WBFontOfName;
+    UILabel *nameLabel        = [[UILabel alloc] init];
+    nameLabel.font            = WBFontOfName;
     nameLabel.backgroundColor = [UIColor clearColor];
     [self addSubview:nameLabel];
     self.nameLabel = nameLabel;
     
     /** 时间 */
-    UILabel *timeLabel = [[UILabel alloc] init];
-    timeLabel.font = WBFontOfTime;
-    timeLabel.textColor = RGBCOLOR(135, 135, 135);
+    UILabel *timeLabel        = [[UILabel alloc] init];
+    timeLabel.font            = WBFontOfTime;
+    timeLabel.textColor       = RGBCOLOR(135, 135, 135);
     timeLabel.backgroundColor = [UIColor clearColor];
     [self addSubview:timeLabel];
     self.timeLabel = timeLabel;
     
     /** 来源 */
-    UILabel *sourceLabel = [[UILabel alloc] init];
-    sourceLabel.font = WBFontOfTime;
-    sourceLabel.textColor = RGBCOLOR(135, 135, 135);
+    UILabel *sourceLabel        = [[UILabel alloc] init];
+    sourceLabel.font            = WBFontOfTime;
+    sourceLabel.textColor       = RGBCOLOR(135, 135, 135);
     sourceLabel.backgroundColor = [UIColor clearColor];
     [self addSubview:sourceLabel];
     self.sourceLabel = sourceLabel;
     
     /** 正文 */
-    UILabel *contentLabel = [[UILabel alloc] init];
-    contentLabel.numberOfLines = 0;
-    contentLabel.font = WBFontOfContent;
-    contentLabel.textColor = RGBCOLOR(39, 39, 39);
+    UILabel *contentLabel        = [[UILabel alloc] init];
+    contentLabel.numberOfLines   = 0;
+    contentLabel.font            = WBFontOfContent;
+    contentLabel.textColor       = RGBCOLOR(39, 39, 39);
     contentLabel.backgroundColor = [UIColor clearColor];
     [self addSubview:contentLabel];
     self.contentLabel = contentLabel;
@@ -131,26 +131,26 @@
 - (void)setupRetweetViewSubviews
 {
     /** 被转发微博的view(父控件) */
-    UIImageView *retweetView = [[UIImageView alloc] init];
+    UIImageView *retweetView           = [[UIImageView alloc] init];
     retweetView.userInteractionEnabled = YES;
-    retweetView.image = [UIImage resizeImageWithName:@"timeline_retweet_background" leftScale:0.9 topScale:0.5];
+    retweetView.image                  = [UIImage resizeImageWithName:@"timeline_retweet_background" leftScale:0.9 topScale:0.5];
     [self addSubview:retweetView];
     self.retweetView = retweetView;
     
     /** 被转发微博作者的昵称 */
-    UILabel *retweetNameLabel = [[UILabel alloc] init];
-    retweetNameLabel.font = WBFontOfRetweetName;
-    retweetNameLabel.textColor = RGBCOLOR(67, 107, 163);
+    UILabel *retweetNameLabel        = [[UILabel alloc] init];
+    retweetNameLabel.font            = WBFontOfRetweetName;
+    retweetNameLabel.textColor       = RGBCOLOR(67, 107, 163);
     retweetNameLabel.backgroundColor = [UIColor clearColor];
     [self.retweetView addSubview:retweetNameLabel];
     self.retweetNameLabel = retweetNameLabel;
     
     /** 被转发微博的正文 */
-    UILabel *retweetContentLabel = [[UILabel alloc] init];
-    retweetContentLabel.font = WBFontOfRetweetContent;
-    retweetContentLabel.textColor = RGBCOLOR(90, 90, 90);
+    UILabel *retweetContentLabel        = [[UILabel alloc] init];
+    retweetContentLabel.font            = WBFontOfRetweetContent;
+    retweetContentLabel.textColor       = RGBCOLOR(90, 90, 90);
     retweetContentLabel.backgroundColor = [UIColor clearColor];
-    retweetContentLabel.numberOfLines = 0;
+    retweetContentLabel.numberOfLines   = 0;
     [self.retweetView addSubview:retweetContentLabel];
     self.retweetContentLabel = retweetContentLabel;
     
@@ -185,31 +185,31 @@
     [self.iconView sd_setImageWithURL:[NSURL URLWithString:status.user.profile_image_url] placeholderImage:[UIImage imageNamed:@"avatar_default"]];
     
     self.nameLabel.frame = self.statusFrames.nameLabelF;
-    self.nameLabel.text = status.user.name;
+    self.nameLabel.text  = status.user.name;
     
     if (status.user.mbrank > 2) {
         self.vipView.hidden = NO;
-        self.vipView.frame = self.statusFrames.vipViewF;
+        self.vipView.frame  = self.statusFrames.vipViewF;
         NSString *imageName = [NSString stringWithFormat:@"common_icon_membership_level%d",status.user.mbrank];
         [self.vipView setImage:[UIImage imageNamed:imageName]];
         self.nameLabel.textColor = [UIColor orangeColor];
     }else{
         self.nameLabel.textColor = [UIColor blackColor];
-        self.vipView.hidden = YES;
+        self.vipView.hidden      = YES;
     }
     
     
     self.timeLabel.frame = self.statusFrames.timeLabelF;
-    self.timeLabel.text = status.createdTime;
+    self.timeLabel.text  = status.createdTime;
     
     self.sourceLabel.frame = self.statusFrames.sourceLabelF;
-    self.sourceLabel.text = status.source;
+    self.sourceLabel.text  = status.source;
     
     self.contentLabel.frame = self.statusFrames.contentLabelF;
-    self.contentLabel.text = status.text;
+    self.contentLabel.text  = status.text;
     
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:self.contentLabel.text];
-    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    NSMutableParagraphStyle *paragraphStyle     = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle setLineSpacing:2];//调整行间距
     
     [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [self.contentLabel.text length])];
@@ -217,16 +217,17 @@
     [self.contentLabel sizeToFit];
     
     if ([status.videoStr length] > 0) {
-        self.videoView.hidden = NO;
-        self.videoView.frame = self.statusFrames.videoViewF;
-        self.videoView.videoUrl = status.videoStr;
+        self.videoView.hidden     = NO;
+        self.videoView.frame      = self.statusFrames.videoViewF;
+        self.videoView.videoImage = status.videoImage;
     }else {
+        self.videoView.videoImage = @"";
         self.videoView.hidden = YES;
     }
     
     if (status.pic_urls.count) {
-        self.pictureView.hidden = NO;
-        self.pictureView.frame = self.statusFrames.pictureViewF;
+        self.pictureView.hidden  = NO;
+        self.pictureView.frame   = self.statusFrames.pictureViewF;
         self.pictureView.picUrls = status.pic_urls;
     }else{
         self.pictureView.hidden = YES;
@@ -241,15 +242,15 @@
     WBStatus *retweetStatus = self.statusFrames.status.retweeted_status;
     
     if (retweetStatus) {
-        self.retweetView.hidden = NO;
-        self.retweetView.frame = self.statusFrames.retweetViewF;
+        self.retweetView.hidden     = NO;
+        self.retweetView.frame      = self.statusFrames.retweetViewF;
         self.retweetNameLabel.frame = self.statusFrames.retweetNameLabelF;
-        self.retweetNameLabel.text = [NSString stringWithFormat:@"@%@", retweetStatus.user.name];
+        self.retweetNameLabel.text  = [NSString stringWithFormat:@"@%@", retweetStatus.user.name];
         
-        self.retweetContentLabel.frame = self.statusFrames.retweetContentLabelF;
-        self.retweetContentLabel.text = retweetStatus.text;
+        self.retweetContentLabel.frame              = self.statusFrames.retweetContentLabelF;
+        self.retweetContentLabel.text               = retweetStatus.text;
         NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:self.retweetContentLabel.text];
-        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        NSMutableParagraphStyle *paragraphStyle     = [[NSMutableParagraphStyle alloc] init];
         [paragraphStyle setLineSpacing:2];//调整行间距
         
         [attributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [retweetStatus.text length])];
@@ -257,8 +258,8 @@
         [self.retweetContentLabel sizeToFit];
         
         if (retweetStatus.pic_urls.count) {
-            self.retweetPictureView.hidden = NO;
-            self.retweetPictureView.frame = self.statusFrames.retweetPictureViewF;
+            self.retweetPictureView.hidden  = NO;
+            self.retweetPictureView.frame   = self.statusFrames.retweetPictureViewF;
             self.retweetPictureView.picUrls = retweetStatus.pic_urls;
         }else{
             self.retweetPictureView.hidden = YES;
